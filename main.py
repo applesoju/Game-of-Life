@@ -51,7 +51,7 @@ class board:
                 pg.draw.rect(window, cell_color, cell_properties)
 
 
-if __name__ == '__main__':
+def main():
     run = True
 
     timer_start = time.time()
@@ -68,3 +68,7 @@ if __name__ == '__main__':
 
         pg.display.update()
     pg.quit()
+
+
+if __name__ =='__main__':
+    main()
