@@ -38,7 +38,7 @@ class board:
 
             self.cells.append(temp_list)
 
-    def draw(self):
+    def draw(self, window):
         for i in self.cells:
             for j in i:
                 cell_color = CELL_ACTIVE_COLOR if j.active else CELL_INACTIVE_COLOR
@@ -48,7 +48,7 @@ class board:
                     CELL_DIMS[0] - 2 * CELL_PADDING,
                     CELL_DIMS[1] - 2 * CELL_PADDING
                 )
-                pg.draw.rect(WIN, cell_color, cell_properties)
+                pg.draw.rect(window, cell_color, cell_properties)
 
 
 if __name__ == '__main__':
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     WIN.fill(BG_COLOR)
     game_board = board(CELL_COUNT)
-    game_board.draw()
+    game_board.draw(WIN)
 
     while run:
         for event in pg.event.get():
