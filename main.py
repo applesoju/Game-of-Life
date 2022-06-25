@@ -11,6 +11,8 @@ CELL_COUNT = ((WINDOW_DIMS[0] - MENU_WIDTH) // CELL_DIMS[0],
 TICKS_PER_SEC = 1
 BG_COLOR = (64, 64, 64)
 CELL_PADDING = 1
+BUTTON_HEIGHT = 40
+BUTTON_PADDING = 0.05 * MENU_WIDTH
 
 pg.init()
 
@@ -43,24 +45,26 @@ class button:
     BORDER_COLOR = (0, 0, 0)
     BORDER_WIDTH = 1
 
-    def __init__(self, size, coords) -> None:
+    def __init__(self, coords, size) -> None:
         self.coords = coords
         self.size = size
 
     def draw(self, window) -> None:
-        pg.draw(window, self.COLOR, self.coords)
+        pg.draw.rect(window, self.COLOR, self.coords + self.size)
+        
         for i in range(4):
             border_coords = (
                 self.coords[0] - i,
                 self.coords[1] - i,
-                self.coords[2] + self.BORDER_WIDTH * 2,
-                self.coords[3] + self.BORDER_WIDTH * 2
+                self.size[0] + self.BORDER_WIDTH * 2,
+                self.size[1] + self.BORDER_WIDTH * 2
             )
-            pg.draw.rect(window, self.BORDER_COLOR, border_coords)
+            pg.draw.rect(window, self.BORDER_COLOR, border_coords, 1)
 
 
 class board:
     cells = [[]]
+    buttons = []
 
     def __init__(self, size, buttons) -> None:
         for i in range(size[0]):
@@ -70,13 +74,17 @@ class board:
                 temp_list.append(cell((i, j)))
 
             self.cells.append(temp_list)
+        
+        for b in buttons:
+            self.buttons.append(b)
 
     def draw(self, window) -> None:
         for i in self.cells:
             for j in i:
                 j.draw(WIN)
 
-        # pg.draw.rect(window, )
+        for b in self.buttons:
+            b.draw(WIN)
 
 
 def main():
@@ -86,7 +94,15 @@ def main():
     time_per_tickrate = 1 / TICKS_PER_SEC
 
     WIN.fill(BG_COLOR)
-    game_board = board(CELL_COUNT, 0)
+    menu = [
+        button(
+            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING,
+             WINDOW_DIMS[1] - (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (MENU_WIDTH * 0.9,
+             BUTTON_HEIGHT)
+            )
+    ]
+    game_board = board(CELL_COUNT, menu)
     game_board.draw(WIN)
 
     while run:
