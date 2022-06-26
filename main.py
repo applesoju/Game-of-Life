@@ -2,7 +2,7 @@ import time
 
 import pygame as pg
 import sympy as sp
-
+# test
 WINDOW_DIMS = (1920, 1080)
 MENU_WIDTH = 200
 CELL_DIMS = (20, 20)
