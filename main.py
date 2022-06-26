@@ -1,8 +1,9 @@
 import time
+from turtle import color
 
 import pygame as pg
 import sympy as sp
-# test
+ 
 WINDOW_DIMS = (1920, 1080)
 MENU_WIDTH = 200
 CELL_DIMS = (20, 20)
@@ -15,10 +16,10 @@ BUTTON_HEIGHT = 40
 BUTTON_PADDING = 0.05 * MENU_WIDTH
 
 pg.init()
-
-WIN = pg.display.set_mode(WINDOW_DIMS)
 pg.display.set_caption('Game of Life in Pygame')
 
+WIN = pg.display.set_mode(WINDOW_DIMS)
+TEXT_FONT = 'arial'
 
 class cell:
     ACTIVE_COLOR = (215, 215, 215)
@@ -62,11 +63,27 @@ class button:
             pg.draw.rect(window, self.BORDER_COLOR, border_coords, 1)
 
 
+class text:
+    def __init__(self, coords, color, content, text_size) -> None:
+        self.coords = coords
+        self.color = color
+        self.content = content
+        self.text_size = text_size
+    
+    def draw(self, window):
+        font = pg.font.SysFont(TEXT_FONT, self.text_size)
+        text = font.render(self.content, True, self.color)
+        text_box = text.get_rect()
+        text_box.center = self.coords
+        window.blit(text, text_box)
+
+
 class board:
     cells = [[]]
     buttons = []
+    texts = []
 
-    def __init__(self, size, buttons) -> None:
+    def __init__(self, size, buttons, texts) -> None:
         for i in range(size[0]):
             temp_list = []
 
@@ -78,6 +95,9 @@ class board:
         for b in buttons:
             self.buttons.append(b)
 
+        for t in texts:
+            self.texts.append(t)
+
     def draw(self, window) -> None:
         for i in self.cells:
             for j in i:
@@ -85,6 +105,9 @@ class board:
 
         for b in self.buttons:
             b.draw(WIN)
+
+        for t in self.texts:
+            t.draw(WIN)
 
 
 def main():
@@ -96,13 +119,19 @@ def main():
     WIN.fill(BG_COLOR)
     menu = [
         button(
-            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING,
-             WINDOW_DIMS[1] - (BUTTON_HEIGHT + BUTTON_PADDING)),
-            (MENU_WIDTH * 0.9,
-             BUTTON_HEIGHT)
+            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING, WINDOW_DIMS[1] - (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
             )
     ]
-    game_board = board(CELL_COUNT, menu)
+    labels = [
+        text(
+            (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT / 2 + BUTTON_PADDING)),
+            (0, 0, 0),
+            'EXIT',
+            24
+        )
+    ]
+    game_board = board(CELL_COUNT, menu, labels)
     game_board.draw(WIN)
 
     while run:
