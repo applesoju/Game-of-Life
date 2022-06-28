@@ -138,13 +138,22 @@ def main():
     game_board.draw(WIN)
 
     while run:
+        # implement handle_events() function
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 run = False
 
+            if event.type == pg.MOUSEMOTION:
+                if game_board.buttons['exit'].rect.collidepoint(event.pos):
+                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
+                else:
+                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
+
+
             if event.type == pg.MOUSEBUTTONDOWN:
                 if game_board.buttons['exit'].rect.collidepoint(event.pos):
                     run = False
+
 
         pg.display.update()
     pg.quit()
