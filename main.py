@@ -49,9 +49,10 @@ class button:
     def __init__(self, coords, size) -> None:
         self.coords = coords
         self.size = size
+        self.rect = pg.Rect(self.coords + self.size)
 
     def draw(self, window) -> None:
-        pg.draw.rect(window, self.COLOR, self.coords + self.size)
+        pg.draw.rect(window, self.COLOR, self.rect)
         
         for i in range(4):
             border_coords = (
@@ -69,10 +70,10 @@ class text:
         self.color = color
         self.content = content
         self.text_size = text_size
+        self.font = pg.font.SysFont(TEXT_FONT, self.text_size)
     
     def draw(self, window):
-        font = pg.font.SysFont(TEXT_FONT, self.text_size)
-        text = font.render(self.content, True, self.color)
+        text = self.font.render(self.content, True, self.color)
         text_box = text.get_rect()
         text_box.center = self.coords
         window.blit(text, text_box)
@@ -80,8 +81,8 @@ class text:
 
 class board:
     cells = [[]]
-    buttons = []
-    texts = []
+    buttons = {}
+    texts = {}
 
     def __init__(self, size, buttons, texts) -> None:
         for i in range(size[0]):
@@ -93,10 +94,10 @@ class board:
             self.cells.append(temp_list)
         
         for b in buttons:
-            self.buttons.append(b)
+            self.buttons[b] = buttons[b]
 
         for t in texts:
-            self.texts.append(t)
+            self.texts[t] = texts[t]
 
     def draw(self, window) -> None:
         for i in self.cells:
@@ -104,10 +105,10 @@ class board:
                 j.draw(WIN)
 
         for b in self.buttons:
-            b.draw(WIN)
+            self.buttons[b].draw(WIN)
 
         for t in self.texts:
-            t.draw(WIN)
+            self.texts[t].draw(WIN)
 
 
 def main():
@@ -117,20 +118,22 @@ def main():
     time_per_tickrate = 1 / TICKS_PER_SEC
 
     WIN.fill(BG_COLOR)
-    menu = [
+    menu = {
+        'exit':
         button(
             (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING, WINDOW_DIMS[1] - (BUTTON_HEIGHT + BUTTON_PADDING)),
             (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
             )
-    ]
-    labels = [
+    }
+    labels = {
+        'exit':
         text(
             (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT / 2 + BUTTON_PADDING)),
             (0, 0, 0),
             'EXIT',
             24
         )
-    ]
+    }
     game_board = board(CELL_COUNT, menu, labels)
     game_board.draw(WIN)
 
@@ -138,6 +141,10 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 run = False
+
+            if event.type == pg.MOUSEBUTTONDOWN:
+                if game_board.buttons['exit'].rect.collidepoint(event.pos):
+                    run = False
 
         pg.display.update()
     pg.quit()
