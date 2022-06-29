@@ -40,11 +40,14 @@ class cell:
         color = self.ACTIVE_COLOR if self.active else self.INACTIVE_COLOR
         pg.draw.rect(window, color, self.box)
 
+    def switch(self):
+        self.active = not self.active
+
 
 class button:
     COLOR = (192, 192, 192)
     BORDER_COLOR = (0, 0, 0)
-    BORDER_WIDTH = 1
+    BORDER_WIDTH = 4
 
     def __init__(self, coords, size) -> None:
         self.coords = coords
@@ -53,13 +56,12 @@ class button:
 
     def draw(self, window) -> None:
         pg.draw.rect(window, self.COLOR, self.rect)
-        
-        for i in range(4):
+        for i in range(-self.BORDER_WIDTH // 2, self.BORDER_WIDTH // 2):
             border_coords = (
-                self.coords[0] - i,
-                self.coords[1] - i,
-                self.size[0] + self.BORDER_WIDTH * 2,
-                self.size[1] + self.BORDER_WIDTH * 2
+                self.coords[0] + i,
+                self.coords[1] + i,
+                self.size[0],
+                self.size[1]
             )
             pg.draw.rect(window, self.BORDER_COLOR, border_coords, 1)
 
@@ -102,13 +104,13 @@ class board:
     def draw(self, window) -> None:
         for i in self.cells:
             for j in i:
-                j.draw(WIN)
+                j.draw(window)
 
         for b in self.buttons:
-            self.buttons[b].draw(WIN)
+            self.buttons[b].draw(window)
 
         for t in self.texts:
-            self.texts[t].draw(WIN)
+            self.texts[t].draw(window)
 
 
 def main():
@@ -123,6 +125,18 @@ def main():
         button(
             (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING, WINDOW_DIMS[1] - (BUTTON_HEIGHT + BUTTON_PADDING)),
             (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
+            ),
+
+        'stop':
+        button(
+            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING, WINDOW_DIMS[1] - 4 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
+            ),
+
+        'start':
+        button(
+            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING, WINDOW_DIMS[1] - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
             )
     }
     labels = {
@@ -131,6 +145,22 @@ def main():
             (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT / 2 + BUTTON_PADDING)),
             (0, 0, 0),
             'EXIT',
+            24
+        ),
+
+        'stop':
+        text(
+            (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT / 2 + BUTTON_PADDING) - 2 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (0, 0, 0),
+            'STOP STOP STOP',
+            24
+        ),
+
+        'start':
+        text(
+            (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT / 2 + BUTTON_PADDING) - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (0, 0, 0),
+            'START',
             24
         )
     }
