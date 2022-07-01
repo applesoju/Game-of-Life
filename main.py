@@ -25,8 +25,8 @@ TEXT_FONT = 'arial'
 
 
 class cell:
-    ACTIVE_COLOR = (215, 215, 215)
-    INACTIVE_COLOR = (0, 0, 0)
+    __ACTIVE_COLOR = (215, 215, 215)
+    __INACTIVE_COLOR = (0, 0, 0)
 
     def __init__(self, coords, active=False, size=CELL_DIMS) -> None:
         self.coords = coords
@@ -40,7 +40,7 @@ class cell:
         )
 
     def draw(self, window):
-        color = self.ACTIVE_COLOR if self.active else self.INACTIVE_COLOR
+        color = self.__ACTIVE_COLOR if self.active else self.__INACTIVE_COLOR
         pg.draw.rect(window, color, self.box)
 
     def switch(self):
@@ -121,7 +121,7 @@ class board:
 
 
     def randomize_cells(self):
-        for col in self.cells[0]:
+        for col in self.cells:
             for cell in col:
 
                 random_bit = random.getrandbits(1)
@@ -229,5 +229,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# git commit -m "added 'board.randomize_cells' method and fixed an error with list of cells, changed the way the window is referenced"
