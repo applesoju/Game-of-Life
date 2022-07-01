@@ -113,21 +113,26 @@ class board:
         for t in self.texts:
             self.texts[t].draw(window)
 
-    def event_handler(self, event):
-        if event.type == pg.QUIT:
-            run = False
+    def event_handler(self, event) -> bool:
+        match event.type:
             
-        if event.type == pg.MOUSEMOTION:
+            case pg.QUIT:
+                return False
             
-            if self.buttons['exit'].rect.collidepoint(event.pos):
-                pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
+            
+            case pg.MOUSEBUTTONDOWN:
                 
-            else:
-                pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
+                if self.buttons['exit'].rect.collidepoint(event.pos):
+                    run = False
+
+
+            case pg.MOUSEMOTION:
                 
-        if event.type == pg.MOUSEBUTTONDOWN:
-            if self.buttons['exit'].rect.collidepoint(event.pos):
-                run = False
+                if self.buttons['exit'].rect.collidepoint(event.pos):
+                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
+                    
+                else:
+                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
 
 
 def main():
