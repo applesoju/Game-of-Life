@@ -1,6 +1,8 @@
+import random
 import time
 from turtle import color
 
+import numpy as np
 import pygame as pg
 import sympy as sp
 
@@ -83,11 +85,13 @@ class text:
 
 
 class board:
-    cells = [[]]
+    cells = []
     buttons = {}
     texts = {}
 
-    def __init__(self, size, buttons, texts) -> None:
+    def __init__(self, window, size, buttons, texts) -> None:
+        self.window = window
+
         for i in range(size[0]):
             temp_list = []
 
@@ -96,45 +100,54 @@ class board:
 
             self.cells.append(temp_list)
 
+        self.number_of_cells = size[0] * size[1]
+
         for b in buttons:
             self.buttons[b] = buttons[b]
 
         for t in texts:
             self.texts[t] = texts[t]
 
-    def draw(self, window) -> None:
+    def draw(self) -> None:
         for i in self.cells:
             for j in i:
-                j.draw(window)
+                j.draw(self.window)
 
         for b in self.buttons:
-            self.buttons[b].draw(window)
+            self.buttons[b].draw(self.window)
 
         for t in self.texts:
-            self.texts[t].draw(window)
+            self.texts[t].draw(self.window)
+
+
+    def randomize_cells(self):
+        for col in self.cells[0]:
+            for cell in col:
+
+                random_bit = random.getrandbits(1)
+                cell.active = True if random_bit else False
+                cell.draw(self.window)
+
 
     def event_handler(self, event) -> bool:
         match event.type:
-            
+
             case pg.QUIT:
                 return False
-            
-            
+
             case pg.MOUSEBUTTONDOWN:
-                
+
                 if self.buttons['exit'].rect.collidepoint(event.pos):
                     return False
 
-
             case pg.MOUSEMOTION:
-                
+
                 if self.buttons['exit'].rect.collidepoint(event.pos):
                     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
-                    
+
                 else:
                     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
-                    
-        
+
         return True
 
 
@@ -182,7 +195,7 @@ def main():
             (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT /
              2 + BUTTON_PADDING) - 2 * (BUTTON_HEIGHT + BUTTON_PADDING)),
             (0, 0, 0),
-            'STOP STOP STOP',
+            'STOP',
             24
         ),
 
@@ -195,13 +208,20 @@ def main():
             24
         )
     }
-    game_board = board(CELL_COUNT, menu, labels)
-    game_board.draw(WIN)
+    game_board = board(WIN, CELL_COUNT, menu, labels)
+    game_board.draw()
 
     while run:
 
         for event in pg.event.get():
             run = game_board.event_handler(event)
+
+        time_passed = time.time() - timer_start
+
+        if run and time_passed > time_per_tickrate:
+            game_board.randomize_cells()
+
+            timer_start = time.time()
 
         pg.display.update()
     pg.quit()
@@ -209,3 +229,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# git commit -m "added 'board.randomize_cells' method and fixed an error with list of cells, changed the way the window is referenced"
