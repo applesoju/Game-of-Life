@@ -123,7 +123,7 @@ class board:
             case pg.MOUSEBUTTONDOWN:
                 
                 if self.buttons['exit'].rect.collidepoint(event.pos):
-                    run = False
+                    return False
 
 
             case pg.MOUSEMOTION:
@@ -133,6 +133,9 @@ class board:
                     
                 else:
                     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
+                    
+        
+        return True
 
 
 def main():
@@ -198,7 +201,7 @@ def main():
     while run:
 
         for event in pg.event.get():
-            game_board.event_handler(event)
+            run = game_board.event_handler(event)
 
         pg.display.update()
     pg.quit()
