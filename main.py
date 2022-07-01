@@ -3,7 +3,7 @@ from turtle import color
 
 import pygame as pg
 import sympy as sp
- 
+
 WINDOW_DIMS = (1920, 1080)
 MENU_WIDTH = 200
 CELL_DIMS = (20, 20)
@@ -20,6 +20,7 @@ pg.display.set_caption('Game of Life in Pygame')
 
 WIN = pg.display.set_mode(WINDOW_DIMS)
 TEXT_FONT = 'arial'
+
 
 class cell:
     ACTIVE_COLOR = (215, 215, 215)
@@ -73,7 +74,7 @@ class text:
         self.content = content
         self.text_size = text_size
         self.font = pg.font.SysFont(TEXT_FONT, self.text_size)
-    
+
     def draw(self, window):
         text = self.font.render(self.content, True, self.color)
         text_box = text.get_rect()
@@ -94,7 +95,7 @@ class board:
                 temp_list.append(cell((i, j)))
 
             self.cells.append(temp_list)
-        
+
         for b in buttons:
             self.buttons[b] = buttons[b]
 
@@ -112,6 +113,22 @@ class board:
         for t in self.texts:
             self.texts[t].draw(window)
 
+    def event_handler(self, event):
+        if event.type == pg.QUIT:
+            run = False
+            
+        if event.type == pg.MOUSEMOTION:
+            
+            if self.buttons['exit'].rect.collidepoint(event.pos):
+                pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
+                
+            else:
+                pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
+                
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if self.buttons['exit'].rect.collidepoint(event.pos):
+                run = False
+
 
 def main():
     run = True
@@ -123,26 +140,30 @@ def main():
     menu = {
         'exit':
         button(
-            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING, WINDOW_DIMS[1] - (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING,
+             WINDOW_DIMS[1] - (BUTTON_HEIGHT + BUTTON_PADDING)),
             (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
-            ),
+        ),
 
         'stop':
         button(
-            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING, WINDOW_DIMS[1] - 4 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING,
+             WINDOW_DIMS[1] - 4 * (BUTTON_HEIGHT + BUTTON_PADDING)),
             (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
-            ),
+        ),
 
         'start':
         button(
-            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING, WINDOW_DIMS[1] - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING,
+             WINDOW_DIMS[1] - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
             (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
-            )
+        )
     }
     labels = {
         'exit':
         text(
-            (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT / 2 + BUTTON_PADDING)),
+            (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] -
+             (BUTTON_HEIGHT / 2 + BUTTON_PADDING)),
             (0, 0, 0),
             'EXIT',
             24
@@ -150,7 +171,8 @@ def main():
 
         'stop':
         text(
-            (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT / 2 + BUTTON_PADDING) - 2 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT /
+             2 + BUTTON_PADDING) - 2 * (BUTTON_HEIGHT + BUTTON_PADDING)),
             (0, 0, 0),
             'STOP STOP STOP',
             24
@@ -158,7 +180,8 @@ def main():
 
         'start':
         text(
-            (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT / 2 + BUTTON_PADDING) - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT /
+             2 + BUTTON_PADDING) - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
             (0, 0, 0),
             'START',
             24
@@ -168,22 +191,9 @@ def main():
     game_board.draw(WIN)
 
     while run:
-        # implement handle_events() function
+
         for event in pg.event.get():
-            if event.type == pg.QUIT:
-                run = False
-
-            if event.type == pg.MOUSEMOTION:
-                if game_board.buttons['exit'].rect.collidepoint(event.pos):
-                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
-                else:
-                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
-
-
-            if event.type == pg.MOUSEBUTTONDOWN:
-                if game_board.buttons['exit'].rect.collidepoint(event.pos):
-                    run = False
-
+            game_board.event_handler(event)
 
         pg.display.update()
     pg.quit()
