@@ -90,6 +90,7 @@ class board:
     texts = {}
 
     def __init__(self, window, size, buttons, texts) -> None:
+        self.run = False
         self.window = window
 
         for i in range(size[0]):
@@ -136,13 +137,23 @@ class board:
                 return False
 
             case pg.MOUSEBUTTONDOWN:
-
                 if self.buttons['exit'].rect.collidepoint(event.pos):
                     return False
+                
+                elif self.buttons['start'].rect.collidepoint(event.pos):
+                    self.run = True
+                    
+                elif self.buttons['stop'].rect.collidepoint(event.pos):
+                    self.run = False
 
             case pg.MOUSEMOTION:
-
                 if self.buttons['exit'].rect.collidepoint(event.pos):
+                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
+
+                elif self.buttons['start'].rect.collidepoint(event.pos):
+                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND) 
+
+                elif self.buttons['stop'].rect.collidepoint(event.pos):
                     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
 
                 else:
@@ -153,7 +164,7 @@ class board:
 
 def main():
     run = True
-
+    
     timer_start = time.time()
     time_per_tickrate = 1 / TICKS_PER_SEC
 
@@ -169,14 +180,14 @@ def main():
         'stop':
         button(
             (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING,
-             WINDOW_DIMS[1] - 4 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+             WINDOW_DIMS[1] - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
             (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
         ),
 
         'start':
         button(
             (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING,
-             WINDOW_DIMS[1] - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+             WINDOW_DIMS[1] - 4 * (BUTTON_HEIGHT + BUTTON_PADDING)),
             (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
         )
     }
@@ -208,22 +219,25 @@ def main():
             24
         )
     }
+    
     game_board = board(WIN, CELL_COUNT, menu, labels)
     game_board.draw()
+    pg.display.update()
 
     while run:
+        time_passed = time.time() - timer_start
+
+        if time_passed > time_per_tickrate:
+            
+            if game_board.run:
+                game_board.randomize_cells()
+                timer_start = time.time()
+            
+            pg.display.update()
 
         for event in pg.event.get():
             run = game_board.event_handler(event)
-
-        time_passed = time.time() - timer_start
-
-        if run and time_passed > time_per_tickrate:
-            game_board.randomize_cells()
-
-            timer_start = time.time()
-
-        pg.display.update()
+                
     pg.quit()
 
 
