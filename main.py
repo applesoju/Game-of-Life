@@ -147,18 +147,15 @@ class board:
                     self.run = False
 
             case pg.MOUSEMOTION:
-                if self.buttons['exit'].rect.collidepoint(event.pos):
-                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
-
-                elif self.buttons['start'].rect.collidepoint(event.pos):
-                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND) 
-
-                elif self.buttons['stop'].rect.collidepoint(event.pos):
-                    pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
-
-                else:
+                on_button = False
+                
+                for key, item in self.buttons.items():
+                    if item.rect.collidepoint(event.pos):
+                        pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
+                        on_button = True
+                if not on_button:
                     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
-
+                    
         return True
 
 
