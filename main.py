@@ -135,6 +135,12 @@ class board:
 
                 random_bit = random.getrandbits(1)
                 cell.active = True if random_bit else False
+                
+                
+    def clear_board(self):
+        for col in self.cells:
+            for cell in col:
+                cell.active = False
 
 
     def event_handler(self, event) -> bool:
@@ -152,6 +158,9 @@ class board:
                     
                 elif self.buttons['stop'].box.collidepoint(event.pos):
                     self.run = False
+                    
+                elif self.buttons['clear'].box.collidepoint(event.pos):
+                    self.clear_board()
                     
                 for cols in self.cells:
                     for cell in cols:
@@ -190,11 +199,18 @@ def main():
         'stop':
         button(
             (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING,
-             WINDOW_DIMS[1] - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+             WINDOW_DIMS[1] - 7 * (BUTTON_HEIGHT + BUTTON_PADDING)),
             (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
         ),
 
         'start':
+        button(
+            (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING,
+             WINDOW_DIMS[1] - 8 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (MENU_WIDTH * 0.9, BUTTON_HEIGHT)
+        ),
+        
+        'clear':
         button(
             (WINDOW_DIMS[0] - MENU_WIDTH + BUTTON_PADDING,
              WINDOW_DIMS[1] - 4 * (BUTTON_HEIGHT + BUTTON_PADDING)),
@@ -214,7 +230,7 @@ def main():
         'stop':
         text(
             (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT /
-             2 + BUTTON_PADDING) - 2 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+             2 + BUTTON_PADDING) - 6 * (BUTTON_HEIGHT + BUTTON_PADDING)),
             (0, 0, 0),
             'STOP',
             24
@@ -223,9 +239,18 @@ def main():
         'start':
         text(
             (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT /
-             2 + BUTTON_PADDING) - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+             2 + BUTTON_PADDING) - 7 * (BUTTON_HEIGHT + BUTTON_PADDING)),
             (0, 0, 0),
             'START',
+            24
+        ),
+        
+        'clear':
+        text(
+            (WINDOW_DIMS[0] - MENU_WIDTH / 2, WINDOW_DIMS[1] - (BUTTON_HEIGHT /
+             2 + BUTTON_PADDING) - 3 * (BUTTON_HEIGHT + BUTTON_PADDING)),
+            (0, 0, 0),
+            'CLEAR',
             24
         )
     }
