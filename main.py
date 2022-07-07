@@ -1,7 +1,5 @@
 import time
-from turtle import color
 
-import numpy as np
 import pygame as pg
 import sympy as sp
 
@@ -34,14 +32,14 @@ def main():
         'stop':
         button(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
-             const.WINDOW_DIMS[1] - 7 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
+             2 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (const.MENU_WIDTH * 0.9, const.BUTTON_HEIGHT)
         ),
 
         'start':
         button(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
-             const.WINDOW_DIMS[1] - 8 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
+             const.BUTTON_HEIGHT + const.BUTTON_PADDING),
             (const.MENU_WIDTH * 0.9, const.BUTTON_HEIGHT)
         ),
 
@@ -64,8 +62,7 @@ def main():
 
         'stop':
         text(
-            (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2, const.WINDOW_DIMS[1] - (const.BUTTON_HEIGHT /
-             2 + const.BUTTON_PADDING) - 6 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
+            (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2, const.BUTTON_HEIGHT / 2 + 2 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (0, 0, 0),
             'STOP',
             24
@@ -73,8 +70,7 @@ def main():
 
         'start':
         text(
-            (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2, const.WINDOW_DIMS[1] - (const.BUTTON_HEIGHT /
-             2 + const.BUTTON_PADDING) - 7 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
+            (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2, const.BUTTON_HEIGHT / 2 + (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (0, 0, 0),
             'START',
             24
