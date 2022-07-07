@@ -28,20 +28,23 @@ class cell:
     __ACTIVE_COLOR = (215, 215, 215)
     __INACTIVE_COLOR = (0, 0, 0)
 
+
     def __init__(self, coords, active=False, size=CELL_DIMS) -> None:
         self.coords = coords
         self.active = active
         self.size = size
-        self.box = (
+        self.box = pg.Rect(
             self.coords[0] * CELL_DIMS[0] + CELL_PADDING,
             self.coords[1] * CELL_DIMS[1] + CELL_PADDING,
             CELL_DIMS[0] - 2 * CELL_PADDING,
             CELL_DIMS[1] - 2 * CELL_PADDING
         )
 
+
     def draw(self, window):
         color = self.__ACTIVE_COLOR if self.active else self.__INACTIVE_COLOR
         pg.draw.rect(window, color, self.box)
+
 
     def switch(self):
         self.active = not self.active
@@ -52,13 +55,15 @@ class button:
     __BORDER_COLOR = (0, 0, 0)
     __BORDER_WIDTH = 4
 
+
     def __init__(self, coords, size) -> None:
         self.coords = coords
         self.size = size
-        self.rect = pg.Rect(self.coords + self.size)
+        self.box = pg.Rect(self.coords + self.size)
+
 
     def draw(self, window) -> None:
-        pg.draw.rect(window, self.__COLOR, self.rect)
+        pg.draw.rect(window, self.__COLOR, self.box)
         for i in range(-self.__BORDER_WIDTH // 2, self.__BORDER_WIDTH // 2):
             border_coords = (
                 self.coords[0] + i,
@@ -77,6 +82,7 @@ class text:
         self.text_size = text_size
         self.font = pg.font.SysFont(TEXT_FONT, self.text_size)
 
+
     def draw(self, window):
         text = self.font.render(self.content, True, self.color)
         text_box = text.get_rect()
@@ -88,6 +94,7 @@ class board:
     cells = []
     buttons = {}
     texts = {}
+
 
     def __init__(self, window, size, buttons, texts) -> None:
         self.run = False
@@ -109,6 +116,7 @@ class board:
         for t in texts:
             self.texts[t] = texts[t]
 
+
     def draw(self) -> None:
         for i in self.cells:
             for j in i:
@@ -127,7 +135,6 @@ class board:
 
                 random_bit = random.getrandbits(1)
                 cell.active = True if random_bit else False
-                cell.draw(self.window)
 
 
     def event_handler(self, event) -> bool:
@@ -137,22 +144,28 @@ class board:
                 return False
 
             case pg.MOUSEBUTTONDOWN:
-                if self.buttons['exit'].rect.collidepoint(event.pos):
+                if self.buttons['exit'].box.collidepoint(event.pos):
                     return False
                 
-                elif self.buttons['start'].rect.collidepoint(event.pos):
+                elif self.buttons['start'].box.collidepoint(event.pos):
                     self.run = True
                     
-                elif self.buttons['stop'].rect.collidepoint(event.pos):
+                elif self.buttons['stop'].box.collidepoint(event.pos):
                     self.run = False
+                    
+                for cols in self.cells:
+                    for cell in cols:
+                        if cell.box.collidepoint(event.pos):
+                            cell.switch()
 
             case pg.MOUSEMOTION:
                 on_button = False
                 
                 for key, item in self.buttons.items():
-                    if item.rect.collidepoint(event.pos):
+                    if item.box.collidepoint(event.pos):
                         pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
                         on_button = True
+                        
                 if not on_button:
                     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
                     
@@ -230,6 +243,7 @@ def main():
                 game_board.randomize_cells()
                 timer_start = time.time()
             
+            game_board.draw()
             pg.display.update()
 
         for event in pg.event.get():
