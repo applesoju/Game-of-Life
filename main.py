@@ -48,6 +48,13 @@ def main():
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
              const.WINDOW_DIMS[1] - 4 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (const.MENU_WIDTH * 0.9, const.BUTTON_HEIGHT)
+        ),
+        
+        'randomize':
+        button(
+            (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
+             5 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
+            (const.MENU_WIDTH * 0.9, const.BUTTON_HEIGHT)
         )
     }
     labels = {
@@ -82,6 +89,14 @@ def main():
              2 + const.BUTTON_PADDING) - 3 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (0, 0, 0),
             'CLEAR',
+            24
+        ),
+        
+        'randomize':
+        text(
+            (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2, const.BUTTON_HEIGHT / 2 + 5 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
+            (0, 0, 0),
+            'RANDOMIZE',
             24
         )
     }

@@ -3,6 +3,7 @@ import random
 import pygame as pg
 
 import cell
+from button import button
 
 
 class board:
@@ -71,6 +72,9 @@ class board:
 
                 elif self.buttons['clear'].box.collidepoint(event.pos):
                     self.clear_board()
+                    
+                elif self.buttons['randomize'].box.collidepoint(event.pos):
+                    self.randomize_cells()
 
                 for cols in self.cells:
                     for cell in cols:
