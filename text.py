@@ -11,7 +11,7 @@ class text:
         self.text_size = text_size
         self.font = pg.font.SysFont(TEXT_FONT, self.text_size)
 
-    def draw(self, window):
+    def draw(self, window) -> None:
         text = self.font.render(self.content, True, self.color)
         text_box = text.get_rect()
         text_box.center = self.coords
