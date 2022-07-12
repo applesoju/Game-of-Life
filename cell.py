@@ -30,7 +30,7 @@ class cell:
         )
 
     def draw(self, window) -> None:
-        """Draws the cell in a given surface (window)
+        """Draws the cell on a given surface (window)
 
         Args:
             window (pygame.Surface): Defines where the cell should be drawn.
