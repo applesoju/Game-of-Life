@@ -20,6 +20,8 @@ def main():
     timer_start = time.time()
 
     WIN.fill(const.BG_COLOR)
+    
+    # Create a dictionary that contains all Buttons
     menu = {
         'exit':
         Button(
@@ -64,6 +66,7 @@ def main():
         )
     }
 
+    # Create a dictionary that contains all InputFields
     input_fields = {
         'tickrate':
         InputField(
@@ -74,6 +77,7 @@ def main():
         )
     }
 
+    # Create the dictionary that contains all Texts
     labels = {
         'exit':
         Text(
@@ -134,21 +138,26 @@ def main():
     game_board.draw()
     pg.display.update()
 
-    while run:
+    while run:          # main game loop
+        # Get the time that passed
         time_passed = time.time() - timer_start
 
+        # If the time that passed is greater than the time of one tick then progress the board
         if time_passed > 1 / game_board.tickrate:
 
             if game_board.run:
                 game_board.next_step()
                 timer_start = time.time()
 
+        # Update the surface
         game_board.draw()
         pg.display.update()
 
+        # Get all events and handle them
         for event in pg.event.get():
             run = game_board.event_handler(event)
 
+    # If the game loop is halted then quit
     pg.quit()
 
 
