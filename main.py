@@ -1,13 +1,12 @@
 import time
 
 import pygame as pg
-import sympy as sp
 
 import const
-from board import board
-from button import button
-from input_field import input_field
-from text import text
+from board import Board
+from button import Button
+from input_field import InputField
+from text import Text
 
 pg.init()
 pg.display.set_caption('Game of Life in Pygame')
@@ -23,51 +22,51 @@ def main():
     WIN.fill(const.BG_COLOR)
     menu = {
         'exit':
-        button(
+        Button(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
              const.WINDOW_DIMS[1] - (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (const.MENU_WIDTH * 0.9, const.BUTTON_HEIGHT)
         ),
 
         'stop':
-        button(
+        Button(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
              6 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (const.MENU_WIDTH * 0.9, const.BUTTON_HEIGHT)
         ),
 
         'start':
-        button(
+        Button(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
              4 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (const.MENU_WIDTH * 0.9, const.BUTTON_HEIGHT)
         ),
 
         'clear':
-        button(
+        Button(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
              const.WINDOW_DIMS[1] - 4 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (const.MENU_WIDTH * 0.9, const.BUTTON_HEIGHT)
         ),
 
         'randomize':
-        button(
+        Button(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
              const.WINDOW_DIMS[1] - 6 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (const.MENU_WIDTH * 0.9, const.BUTTON_HEIGHT)
         ),
-        
+
         'next_step':
-        button(
+        Button(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
              const.WINDOW_DIMS[1] - 8 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (const.MENU_WIDTH * 0.9, const.BUTTON_HEIGHT)
         )
     }
-    
+
     input_fields = {
         'tickrate':
-        input_field(
+        InputField(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH + const.BUTTON_PADDING,
              const.BUTTON_HEIGHT + const.BUTTON_PADDING),
             (const.MENU_WIDTH * 0.9, 2 * const.BUTTON_HEIGHT + const.BUTTON_PADDING),
@@ -77,7 +76,7 @@ def main():
 
     labels = {
         'exit':
-        text(
+        Text(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2,
              const.WINDOW_DIMS[1] - (const.BUTTON_HEIGHT / 2 + const.BUTTON_PADDING)),
             (0, 0, 0),
@@ -86,7 +85,7 @@ def main():
         ),
 
         'stop':
-        text(
+        Text(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2,
              const.BUTTON_HEIGHT / 2 + 6 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (0, 0, 0),
@@ -95,7 +94,7 @@ def main():
         ),
 
         'start':
-        text(
+        Text(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2,
              const.BUTTON_HEIGHT / 2 + 4 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (0, 0, 0),
@@ -104,7 +103,7 @@ def main():
         ),
 
         'clear':
-        text(
+        Text(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2,
              const.WINDOW_DIMS[1] - (const.BUTTON_HEIGHT / 2 + const.BUTTON_PADDING) - 3 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (0, 0, 0),
@@ -113,16 +112,16 @@ def main():
         ),
 
         'randomize':
-        text(
+        Text(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2,
              const.WINDOW_DIMS[1] - (const.BUTTON_HEIGHT / 2 + const.BUTTON_PADDING) - 5 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (0, 0, 0),
             'RANDOMIZE',
             24
         ),
-        
+
         'next_step':
-        text(
+        Text(
             (const.WINDOW_DIMS[0] - const.MENU_WIDTH / 2,
              const.WINDOW_DIMS[1] - (const.BUTTON_HEIGHT / 2 + const.BUTTON_PADDING) - 7 * (const.BUTTON_HEIGHT + const.BUTTON_PADDING)),
             (0, 0, 0),
@@ -131,7 +130,7 @@ def main():
         )
     }
 
-    game_board = board(WIN, const.CELL_COUNT, menu, labels, input_fields)
+    game_board = Board(WIN, const.CELL_COUNT, menu, labels, input_fields)
     game_board.draw()
     pg.display.update()
 

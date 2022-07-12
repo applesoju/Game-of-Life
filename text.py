@@ -3,12 +3,12 @@ import pygame as pg
 from const import TEXT_FONT
 
 
-class text:
+class Text:
     """Class that represents the text drawn on a surface
     """
 
     def __init__(self, coords, color, content, text_size) -> None:
-        """Constructor of 'text' class
+        """Constructor of 'Text' class
 
         Args:
             coords ((int, int)): Coordinates on the surface where a text should be drawn

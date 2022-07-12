@@ -1,9 +1,9 @@
 import pygame as pg
 
-from text import text
+from text import Text
 
 
-class input_field:
+class InputField:
     __INACTIVE_COLOR = (96, 96, 96)
     __ACTIVE_COLOR = (240, 240, 240)
     __BORDER_COLOR = (0, 0, 0)
@@ -18,7 +18,7 @@ class input_field:
         )
         self.size = size
         self.input_type = input_type
-        self.text = text(
+        self.text = Text(
             text_coords, self.__TEXT_COLOR, '', 30
         )
         self.active = False

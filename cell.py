@@ -3,7 +3,7 @@ import pygame as pg
 from const import CELL_DIMS, CELL_PADDING
 
 
-class cell:
+class Cell:
     """Class that represents one cell
     """
 
@@ -11,7 +11,7 @@ class cell:
     __INACTIVE_COLOR = (0, 0, 0)        # Color of an inactive cell
 
     def __init__(self, coords, active=False, size=CELL_DIMS) -> None:
-        """Constructor of 'Cell' class.
+        """Constructor of 'Cell' class
 
         Args:
             coords ((int, int)): The coordinates of a cell. Ranges between (0,0) and CELL_COUNT
@@ -33,7 +33,7 @@ class cell:
         """Draws the cell on a given surface (window)
 
         Args:
-            window (pygame.Surface): Defines where the cell should be drawn.
+            window (pygame.Surface): Defines where the cell should be drawn
         """
         
         color = self.__ACTIVE_COLOR if self.active else self.__INACTIVE_COLOR

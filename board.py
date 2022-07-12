@@ -4,13 +4,11 @@ from tkinter.tix import CELL
 
 import pygame as pg
 
-import cell
-from button import button
+from cell import Cell
 from const import CELL_COUNT
-from input_field import input_field
 
 
-class board:
+class Board:
     cells = []
     buttons = {}
     texts = {}
@@ -25,7 +23,7 @@ class board:
             temp_list = []
 
             for j in range(size[1]):
-                temp_list.append(cell.cell((i, j)))
+                temp_list.append(Cell((i, j)))
 
             self.cells.append(temp_list)
 
