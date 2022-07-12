@@ -1,17 +1,30 @@
 import pygame as pg
 
 
-class button:
-    __COLOR = (192, 192, 192)
-    __BORDER_COLOR = (0, 0, 0)
-    __BORDER_WIDTH = 4
+class Button:
+    """Class that represents a button
+    """
+    __COLOR = (192, 192, 192)       # Color of a button
+    __BORDER_COLOR = (0, 0, 0)      # Border color of a button
+    __BORDER_WIDTH = 4              # Width of button's border
 
     def __init__(self, coords, size) -> None:
+        """Constructor of 'Button' class
+
+        Args:
+            coords ((int, int)): Coordinates on the surface where a button should be drawn
+            size ((int, int)): Width and height of a button
+        """
         self.coords = coords
         self.size = size
         self.box = pg.Rect(self.coords + self.size)
 
     def draw(self, window) -> None:
+        """Draws the button on a given surface (window)
+
+        Args:
+            window (pygame.Surface): Defines where the cell should be drawn
+        """
         pg.draw.rect(window, self.__COLOR, self.box)
         for i in range(-self.__BORDER_WIDTH // 2, self.__BORDER_WIDTH // 2):
             border_coords = (
