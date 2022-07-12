@@ -31,6 +31,7 @@ class Text:
         Args:
             window (pygame.Surface): Defines where the cell should be drawn.
         """
+
         text = self.font.render(self.content, True, self.color)
         text_box = text.get_rect()
         text_box.center = self.coords

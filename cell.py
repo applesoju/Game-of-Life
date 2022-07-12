@@ -18,7 +18,7 @@ class Cell:
             active (bool, optional): Defines whether the cell is active (alive) or not. Defaults to False.
             size ((int, int), optional): Defines the size of a cell. Defaults to CELL_DIMS.
         """
-        
+
         self.coords = coords
         self.active = active
         self.size = size
@@ -35,11 +35,12 @@ class Cell:
         Args:
             window (pygame.Surface): Defines where the cell should be drawn
         """
-        
+
         color = self.__ACTIVE_COLOR if self.active else self.__INACTIVE_COLOR
         pg.draw.rect(window, color, self.box)
 
     def switch(self) -> None:
         """Switches the state of a cell
         """
+
         self.active = not self.active
