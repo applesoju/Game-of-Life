@@ -18,9 +18,9 @@ class cell:
             CELL_DIMS[1] - 2 * CELL_PADDING
         )
 
-    def draw(self, window):
+    def draw(self, window) -> None:
         color = self.__ACTIVE_COLOR if self.active else self.__INACTIVE_COLOR
         pg.draw.rect(window, color, self.box)
 
-    def switch(self):
+    def switch(self) -> None:
         self.active = not self.active

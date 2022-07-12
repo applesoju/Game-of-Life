@@ -1,9 +1,12 @@
+import copy
 import random
+from tkinter.tix import CELL
 
 import pygame as pg
 
 import cell
 from button import button
+from const import CELL_COUNT
 from input_field import input_field
 
 
@@ -64,11 +67,37 @@ class board:
                 cell.active = False
 
     def next_step(self) -> None:
-        return None
-        # for col in self.cells:
-        #     for cell in col:
+        new_board = copy.deepcopy(self.cells)
+        
+        neighbourhood = [
+            (-1, -1), (0, -1), (1, -1),
+            (-1, 0), (1, 0),
+            (-1, 1), (0, 1), (1, 1)
+        ]
+        
+        for col in self.cells:
+            for cell in col:
+                active_neighbour_count = 0
                 
-
+                for n in neighbourhood:
+                    x = (cell.coords[0] + n[0]) % CELL_COUNT[0]
+                    y = (cell.coords[1] + n[1]) % CELL_COUNT[1]
+                    neighbour = self.cells[x][y]
+                    
+                    if neighbour.active:
+                        active_neighbour_count += 1
+                        
+                if active_neighbour_count == 3:
+                    new_board[cell.coords[0]][cell.coords[1]].active = True
+                    
+                elif cell.active and active_neighbour_count == 2:
+                    new_board[cell.coords[0]][cell.coords[1]].active = True
+                    
+                else:
+                    new_board[cell.coords[0]][cell.coords[1]].active = False
+        
+        self.cells = copy.deepcopy(new_board)
+        
     def event_handler(self, event) -> bool:
         match event.type:
 
@@ -80,7 +109,7 @@ class board:
 
                     if event.key == pg.K_RETURN:
                         new_tickrate = self.fields['tickrate'].process_input()
-                        
+
                         if new_tickrate is not None:
                             self.tickrate = new_tickrate
 
@@ -106,8 +135,12 @@ class board:
                 elif self.buttons['randomize'].box.collidepoint(event.pos):
                     self.randomize_cells()
 
+                elif self.buttons['next_step'].box.collidepoint(event.pos):
+                    self.next_step()
+
                 if self.fields['tickrate'].box.collidepoint(event.pos):
                     self.fields['tickrate'].active = True
+
                 else:
                     self.fields['tickrate'].active = False
 

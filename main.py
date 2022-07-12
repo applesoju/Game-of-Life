@@ -141,7 +141,7 @@ def main():
         if time_passed > 1 / game_board.tickrate:
 
             if game_board.run:
-                game_board.randomize_cells()
+                game_board.next_step()
                 timer_start = time.time()
 
         game_board.draw()

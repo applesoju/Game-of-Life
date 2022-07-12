@@ -47,7 +47,7 @@ class input_field:
 
         try:
             input = self.input_type(self.text.content)
-        except:
+        except TypeError:
             print('Error - Input has a wrong type')
 
         self.text.content = ''
