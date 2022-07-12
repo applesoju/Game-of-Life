@@ -90,7 +90,7 @@ class InputField:
         """Add a character to the input string
 
         Args:
-            char (string): The character that should be added to already existing input string
+            char (str): The character that should be added to already existing input string
         """
         
         if len(self.text.content) < 3:
