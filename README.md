@@ -43,7 +43,11 @@ Most of the functionality is self-explanatory but it's worth noting that the gre
 
 ## Authors
 
-Patryk Marciniak ( flx70605@gmail.com )
+Patryk Marciniak ( patryknmarciniak@gmail.com )
+
+## Feedback
+
+Any feedback is welcome, I'm a beginner trying to improve. If you have any questions or suggestions please e-mail me at patryknmarciniak@gmail.com
 
 ## License
 
